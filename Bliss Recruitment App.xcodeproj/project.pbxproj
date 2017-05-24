@@ -14,6 +14,8 @@
 		805C31DF1ED5D48000A6CA6A /* Bliss_Recruitment_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31DE1ED5D48000A6CA6A /* Bliss_Recruitment_AppTests.swift */; };
 		805C31EA1ED5D48000A6CA6A /* Bliss_Recruitment_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31E91ED5D48000A6CA6A /* Bliss_Recruitment_AppUITests.swift */; };
 		805C31FC1ED5DA7700A6CA6A /* QuestionDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31FB1ED5DA7700A6CA6A /* QuestionDetailController.swift */; };
+		805C31FE1ED5DC2C00A6CA6A /* QuestionListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31FD1ED5DC2C00A6CA6A /* QuestionListCellView.swift */; };
+		805C32001ED5DD4400A6CA6A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31FF1ED5DD4400A6CA6A /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		805C31E91ED5D48000A6CA6A /* Bliss_Recruitment_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bliss_Recruitment_AppUITests.swift; sourceTree = "<group>"; };
 		805C31EB1ED5D48000A6CA6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		805C31FB1ED5DA7700A6CA6A /* QuestionDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionDetailController.swift; sourceTree = "<group>"; };
+		805C31FD1ED5DC2C00A6CA6A /* QuestionListCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionListCellView.swift; sourceTree = "<group>"; };
+		805C31FF1ED5DD4400A6CA6A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,7 @@
 				805C31D01ED5D48000A6CA6A /* Assets.xcassets */,
 				805C31D21ED5D48000A6CA6A /* LaunchScreen.storyboard */,
 				805C31D51ED5D48000A6CA6A /* Info.plist */,
+				805C31FF1ED5DD4400A6CA6A /* Extensions.swift */,
 			);
 			path = "Bliss Recruitment App";
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 		805C31FA1ED5D5F800A6CA6A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				805C31FD1ED5DC2C00A6CA6A /* QuestionListCellView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -293,6 +299,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				805C32001ED5DD4400A6CA6A /* Extensions.swift in Sources */,
+				805C31FE1ED5DC2C00A6CA6A /* QuestionListCellView.swift in Sources */,
 				805C31CC1ED5D48000A6CA6A /* QuestionListController.swift in Sources */,
 				805C31FC1ED5DA7700A6CA6A /* QuestionDetailController.swift in Sources */,
 				805C31CA1ED5D48000A6CA6A /* AppDelegate.swift in Sources */,

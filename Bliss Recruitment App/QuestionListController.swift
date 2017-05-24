@@ -17,7 +17,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         
         navigationItem.title = "Bliss Recruitment App"
         collectionView?.backgroundColor = .yellow
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: questionCellId)
+        collectionView?.register(QuestionListCellView.self, forCellWithReuseIdentifier: questionCellId)
         
     }
     
@@ -28,14 +28,14 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: questionCellId, for: indexPath)
-        cell.backgroundColor = .blue
+        //cell.backgroundColor = .blue
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: self.view.frame.width, height: 100)
+        return CGSize(width: self.view.frame.width, height: 70)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
