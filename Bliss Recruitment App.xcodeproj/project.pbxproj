@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		805C31CA1ED5D48000A6CA6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31C91ED5D48000A6CA6A /* AppDelegate.swift */; };
-		805C31CC1ED5D48000A6CA6A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31CB1ED5D48000A6CA6A /* ViewController.swift */; };
+		805C31CC1ED5D48000A6CA6A /* QuestionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31CB1ED5D48000A6CA6A /* QuestionListController.swift */; };
 		805C31D11ED5D48000A6CA6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 805C31D01ED5D48000A6CA6A /* Assets.xcassets */; };
 		805C31D41ED5D48000A6CA6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 805C31D21ED5D48000A6CA6A /* LaunchScreen.storyboard */; };
 		805C31DF1ED5D48000A6CA6A /* Bliss_Recruitment_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31DE1ED5D48000A6CA6A /* Bliss_Recruitment_AppTests.swift */; };
 		805C31EA1ED5D48000A6CA6A /* Bliss_Recruitment_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31E91ED5D48000A6CA6A /* Bliss_Recruitment_AppUITests.swift */; };
+		805C31FC1ED5DA7700A6CA6A /* QuestionDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C31FB1ED5DA7700A6CA6A /* QuestionDetailController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +36,7 @@
 /* Begin PBXFileReference section */
 		805C31C61ED5D48000A6CA6A /* Bliss Recruitment App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bliss Recruitment App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		805C31C91ED5D48000A6CA6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		805C31CB1ED5D48000A6CA6A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		805C31CB1ED5D48000A6CA6A /* QuestionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionListController.swift; sourceTree = "<group>"; };
 		805C31D01ED5D48000A6CA6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		805C31D31ED5D48000A6CA6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		805C31D51ED5D48000A6CA6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,6 +46,7 @@
 		805C31E51ED5D48000A6CA6A /* Bliss Recruitment AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bliss Recruitment AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		805C31E91ED5D48000A6CA6A /* Bliss_Recruitment_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bliss_Recruitment_AppUITests.swift; sourceTree = "<group>"; };
 		805C31EB1ED5D48000A6CA6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		805C31FB1ED5DA7700A6CA6A /* QuestionDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionDetailController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,8 +97,11 @@
 		805C31C81ED5D48000A6CA6A /* Bliss Recruitment App */ = {
 			isa = PBXGroup;
 			children = (
+				805C31F71ED5D5D900A6CA6A /* API */,
+				805C31F81ED5D5DF00A6CA6A /* Model */,
+				805C31FA1ED5D5F800A6CA6A /* View */,
+				805C31F91ED5D5E500A6CA6A /* Controller */,
 				805C31C91ED5D48000A6CA6A /* AppDelegate.swift */,
-				805C31CB1ED5D48000A6CA6A /* ViewController.swift */,
 				805C31D01ED5D48000A6CA6A /* Assets.xcassets */,
 				805C31D21ED5D48000A6CA6A /* LaunchScreen.storyboard */,
 				805C31D51ED5D48000A6CA6A /* Info.plist */,
@@ -120,6 +125,36 @@
 				805C31EB1ED5D48000A6CA6A /* Info.plist */,
 			);
 			path = "Bliss Recruitment AppUITests";
+			sourceTree = "<group>";
+		};
+		805C31F71ED5D5D900A6CA6A /* API */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		805C31F81ED5D5DF00A6CA6A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		805C31F91ED5D5E500A6CA6A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				805C31CB1ED5D48000A6CA6A /* QuestionListController.swift */,
+				805C31FB1ED5DA7700A6CA6A /* QuestionDetailController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		805C31FA1ED5D5F800A6CA6A /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +293,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				805C31CC1ED5D48000A6CA6A /* ViewController.swift in Sources */,
+				805C31CC1ED5D48000A6CA6A /* QuestionListController.swift in Sources */,
+				805C31FC1ED5DA7700A6CA6A /* QuestionDetailController.swift in Sources */,
 				805C31CA1ED5D48000A6CA6A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,6 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MJHBLUH3VK;
 				INFOPLIST_FILE = "Bliss Recruitment App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.luismachado.Bliss-Recruitment-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -416,6 +453,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MJHBLUH3VK;
 				INFOPLIST_FILE = "Bliss Recruitment App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.luismachado.Bliss-Recruitment-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
