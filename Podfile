@@ -6,6 +6,7 @@ target 'Bliss Recruitment App' do
   use_frameworks!
 
    pod 'Alamofire', '~> 4.4'
+   pod "SwiftSpinner"
 
   # Pods for Bliss Recruitment App
 

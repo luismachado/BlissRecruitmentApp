@@ -39,4 +39,16 @@ struct Question {
             self.publishedAt = date
         }
     }
+    
+    func toJson() -> [String:Any] {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Question.dateFormat
+        let publishedAtString = dateFormatter.string(from: publishedAt)
+        
+        let choicesJson = choices.map({$0.toJson()})
+        
+        
+        return ["id":id, "thumb_url":thumbUrl, "image_url":imageUrl, "question":question, "publishedAt":publishedAtString, "choices":choicesJson]
+    }
 }

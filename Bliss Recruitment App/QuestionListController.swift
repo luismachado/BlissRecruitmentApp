@@ -18,11 +18,12 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         navigationItem.title = "Bliss Recruitment App"
         collectionView?.backgroundColor = .yellow
         collectionView?.register(QuestionListCellView.self, forCellWithReuseIdentifier: questionCellId)
-        
+
         fetchQuestions()
     }
     
     fileprivate func fetchQuestions() {
+        
         
         BlissAPI.shared.obtainAllQuestions(limit: 5, offset: 0, filter: nil, completion: { (questions) in
             self.questions.append(contentsOf: questions)
@@ -51,11 +52,17 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("clicked")
         
-        let questionDetailController = QuestionDetailController()
-        questionDetailController.question = questions[indexPath.item]
-        navigationController?.pushViewController(questionDetailController, animated: true)
+        //Maybe use this question object instead of downloading it?
+        let id = questions[indexPath.item].id
+        
+        BlissAPI.shared.obtainQuestionBy(id: id, completion: { (question) in
+            let questionDetailController = QuestionDetailController()
+            questionDetailController.question = question
+            self.navigationController?.pushViewController(questionDetailController, animated: true)
+        }) { (error) in
+            print(error) //TODO AlertController
+        }
     }
 }
 

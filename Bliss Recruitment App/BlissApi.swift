@@ -15,42 +15,93 @@ class BlissAPI: NSObject {
     let stringUrl = "https://private-anon-f5f756918c-blissrecruitmentapi.apiary-mock.com/"
 
     static let shared:BlissAPI = BlissAPI()
+    
+    func checkHealth(success: @escaping () -> (),
+                     failure: @escaping(Error) -> ()) {
+        
+        let requestUrl = stringUrl+"health"
+        Alamofire.request(requestUrl).validate().responseJSON { (response) in
+            print(response.result)
+            switch response.result {
+            case .success:
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
 
     func obtainAllQuestions(limit:Int, offset:Int, filter:String?,
                             completion: @escaping ([Question]) -> (),
-                            fail: @escaping(Error) -> ()) {
+                            failure: @escaping(Error) -> ()) {
         
         let filterString = filter != nil ? "&\(filter)" : ""
         let requestUrl = stringUrl+"questions?\(limit)&\(offset)"+filterString
         print(requestUrl)
         Alamofire.request(requestUrl).validate().responseJSON { (response) in
-            if let error = response.error {
-                fail(error)
-                return
-            }
             
-            guard let json = response.result.value as? Array<[String:Any?]> else {
-                fail(NSError(domain: "Unable to retrieve questions.", code: -1, userInfo: nil))
-                return
+            switch response.result {
+            case .failure(let error):
+                failure(error)
+            case .success:
+                guard let json = response.result.value as? Array<[String:Any]> else {
+                    failure(NSError(domain: "Unable to retrieve questions.", code: -1, userInfo: nil))
+                    return
+                }
+                var questions = [Question]()
+                for question in json {
+                    questions.append(Question(json: question))
+                }
+                
+                completion(questions)
             }
-            var questions = [Question]()
-            for question in json {
-                questions.append(Question(json: question))
-            }
-            
-            completion(questions)
         }
     }
     
     func obtainQuestionBy(id: Int,
                           completion: @escaping (Question) -> (),
-                          fail: @escaping(Error) -> ()) {
+                          failure: @escaping(Error) -> ()) {
         
-        
+        let requestUrl = stringUrl+"questions/\(id)"
+        print(requestUrl)
+        Alamofire.request(requestUrl).validate().responseJSON { (response) in
+            
+            switch response.result {
+            case .failure(let error):
+                failure(error)
+            case .success:
+                guard let json = response.result.value as? [String:Any] else {
+                    failure(NSError(domain: "Unable to retrieve question.", code: -1, userInfo: nil))
+                    return
+                }
+                let question = Question(json: json)
+                completion(question)
+            }
+        }
     }
-
     
-    
-    
+    func updateQuestion(question: Question,
+                        completion: @escaping (Question) -> (),
+                        failure: @escaping(Error) -> ()) {
+        
+        let requestUrl = stringUrl+"questions/\(question.id)"
+        let questionJson:Parameters = question.toJson()
+        //let questionJson:Parameters = Parameters()
+        print(requestUrl)
+        Alamofire.request(requestUrl, method: .put, parameters: questionJson, encoding: JSONEncoding.default).validate().responseJSON { (response) in
+            print(response)
+            switch response.result {
+            case .failure(let error):
+                failure(error)
+            case .success:
+                guard let json = response.result.value as? [String:Any] else {
+                    failure(NSError(domain: "Unable to retrieve updated question.", code: -1, userInfo: nil))
+                    return
+                }
+                let question = Question(json: json)
+                completion(question)
+            }
+        }
+    }
     
 }

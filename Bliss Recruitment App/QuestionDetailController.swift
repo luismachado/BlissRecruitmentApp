@@ -20,6 +20,10 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
                     self.updateThumbnailSizeFor(frameSize: self.view.frame.size)
                 })
             }
+            
+            if let question = question {
+                print(question.toJson())
+            }
         }
     }
     
@@ -91,6 +95,16 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     }
     
     func votedOn(choice: Choice) {
+        
+        //TODO INCREASE VALUE
+        guard let question = question else { return }
+        BlissAPI.shared.updateQuestion(question: question, completion: { (question) in
+            print("update")
+        }) { (error) in
+            print(error)
+        }
+        
+        
         print("Voted in \(choice.name)")
     }
     

@@ -16,4 +16,8 @@ struct Choice {
         self.name = json["choice"] as? String ?? ""
         self.votes = json["votes"] as? Int ?? 0
     }
+    
+    func toJson() -> [String:Any] {
+        return [name:votes]
+    }
 }

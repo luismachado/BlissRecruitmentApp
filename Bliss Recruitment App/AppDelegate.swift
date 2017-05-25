@@ -19,10 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        let questionListController = QuestionListController(collectionViewLayout: UICollectionViewFlowLayout())
-        let navigationController = UINavigationController(rootViewController: questionListController)
+        //let questionListController = QuestionListController(collectionViewLayout: UICollectionViewFlowLayout())
+        //let navigationController = UINavigationController(rootViewController: questionListController)
         
-        self.window?.rootViewController = navigationController
+        let loadingController = LoadingController()
+        
+        //self.window?.rootViewController = navigationController
+        self.window?.rootViewController = loadingController
         self.window?.makeKeyAndVisible()
         
         return true
