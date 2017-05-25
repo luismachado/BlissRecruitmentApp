@@ -10,13 +10,32 @@ import UIKit
 
 class QuestionListCellView: UICollectionViewCell {
     
-    let thumbnail: UIImageView = {
-        let image = UIImageView()
+    var question: Question? {
+        didSet {
+            questionText.text = question?.question
+            thumbnail.image = nil
+            
+            if let thumbnailUrl = question?.thumbUrl {
+                thumbnail.loadImageUsingUrlString(urlString: thumbnailUrl, completion: nil)
+            }
+            
+            if let publishedAt = question?.publishedAt {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = Question.dateFormat
+                //dateFormatter.locale = Locale.init(identifier: "en_GB")
+                
+                date.text = dateFormatter.string(from: publishedAt)
+            }
+        }
+    }
+    
+    let thumbnail: QuestionImageView = {
+        let image = QuestionImageView()
         image.backgroundColor = .green
         return image
     }()
     
-    let question: UILabel = {
+    let questionText: UILabel = {
         let label = UILabel()
         label.backgroundColor = .gray
         label.text = "A QUESTION"
@@ -45,8 +64,8 @@ class QuestionListCellView: UICollectionViewCell {
         addSubview(date)
         date.anchor(top: nil, left: thumbnail.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 8, paddingRight: 8, width: 0, height: 12)
         
-        addSubview(question)
-        question.anchor(top: topAnchor, left: thumbnail.rightAnchor, bottom: date.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 16, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)    }
+        addSubview(questionText)
+        questionText.anchor(top: topAnchor, left: thumbnail.rightAnchor, bottom: date.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 16, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
