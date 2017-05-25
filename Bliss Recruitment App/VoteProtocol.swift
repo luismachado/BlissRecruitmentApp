@@ -10,5 +10,5 @@ import Foundation
 
 protocol VoteProtocol {
     
-    func votedOn(choice: Choice)
+    func votedOn(selectedChoice: Choice)
 }

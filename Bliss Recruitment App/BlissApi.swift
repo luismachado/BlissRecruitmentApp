@@ -86,10 +86,9 @@ class BlissAPI: NSObject {
         
         let requestUrl = stringUrl+"questions/\(question.id)"
         let questionJson:Parameters = question.toJson()
-        //let questionJson:Parameters = Parameters()
-        print(requestUrl)
+
         Alamofire.request(requestUrl, method: .put, parameters: questionJson, encoding: JSONEncoding.default).validate().responseJSON { (response) in
-            print(response)
+
             switch response.result {
             case .failure(let error):
                 failure(error)

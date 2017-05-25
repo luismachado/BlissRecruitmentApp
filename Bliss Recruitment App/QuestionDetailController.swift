@@ -12,17 +12,14 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     
     var question: Question? {
         didSet {
-            questionName.text = question?.question
-            
-            if let imageUrl = question?.imageUrl {
-                //thumbnail.loadImageUsingUrlString(urlString: imageUrl)
-                thumbnail.loadImageUsingUrlString(urlString: imageUrl, completion: { 
+            if let question = question {
+                questionName.text = question.question
+                
+                thumbnail.loadImageUsingUrlString(urlString: question.imageUrl, completion: {
                     self.updateThumbnailSizeFor(frameSize: self.view.frame.size)
                 })
-            }
-            
-            if let question = question {
-                print(question.toJson())
+                
+                choicesCollectionView.reloadData()
             }
         }
     }
@@ -32,7 +29,6 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         thumbnailWidthAnchor?.constant = -16
         
         if let image = thumbnail.image {
-            print("here")
             let ratio = image.size.height / image.size.width
             
             if let constant = thumbnailWidthAnchor?.constant {
@@ -55,7 +51,7 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     
     let questionName: UILabel = {
         let label = UILabel()
-        label.text = "QUESTION QUESTION QUESTION"
+        label.text = ""
         label.backgroundColor = .gray
         return label
     }()
@@ -94,18 +90,25 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         
     }
     
-    func votedOn(choice: Choice) {
+    func votedOn(selectedChoice: Choice) {
+        let idx = question?.choices.index { (choice) -> Bool in
+            choice.name == selectedChoice.name && choice.votes == selectedChoice.votes
+        }
         
-        //TODO INCREASE VALUE
+        guard let questionIndex = idx else {return}
+        
+        question?.choices[questionIndex].votes += 1
         guard let question = question else { return }
+        
         BlissAPI.shared.updateQuestion(question: question, completion: { (question) in
-            print("update")
+            self.question = question
         }) { (error) in
+            //TODO SHOW ALARM
             print(error)
         }
         
         
-        print("Voted in \(choice.name)")
+        print("Voted in \(selectedChoice.name)")
     }
     
     
