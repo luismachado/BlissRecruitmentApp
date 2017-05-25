@@ -103,4 +103,23 @@ class BlissAPI: NSObject {
         }
     }
     
+    func share(destinationEmail: String, contentUrl: String,
+               success: @escaping () -> (),
+               failure: @escaping(Error) -> ()) {
+        
+        let requestUrl = stringUrl+"share?\(destinationEmail)&\(contentUrl)"
+
+        
+        Alamofire.request(requestUrl, method: .post).validate().responseJSON { (response) in
+            
+            switch response.result {
+            case .success:
+                success()
+            case .failure(let error):
+                failure(error)
+            }
+        }
+    }
+    
+    
 }

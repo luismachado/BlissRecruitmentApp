@@ -70,6 +70,22 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         
         view.backgroundColor = .red
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(sharePressed))
+        
+        setup()
+
+        choicesCollectionView.delegate = self
+        choicesCollectionView.dataSource = self
+        choicesCollectionView.register(ChoiceCellView.self, forCellWithReuseIdentifier: "choiceCellId")
+        
+    }
+    
+    @objc private func sharePressed() {
+        let shareController = ShareController()
+        navigationController?.pushViewController(shareController, animated: true)
+    }
+    
+    func setup() {
         view.addSubview(thumbnail)
         thumbnail.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 8).isActive = true
         thumbnail.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -83,11 +99,6 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         
         view.addSubview(choicesCollectionView)
         choicesCollectionView.anchor(top: questionName.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0)
-
-        choicesCollectionView.delegate = self
-        choicesCollectionView.dataSource = self
-        choicesCollectionView.register(ChoiceCellView.self, forCellWithReuseIdentifier: "choiceCellId")
-        
     }
     
     func votedOn(selectedChoice: Choice) {
