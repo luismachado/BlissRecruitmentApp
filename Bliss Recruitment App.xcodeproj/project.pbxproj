@@ -26,6 +26,8 @@
 		805C320E1ED755CF00A6CA6A /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C320D1ED755CF00A6CA6A /* ShareController.swift */; };
 		805C32101ED7702400A6CA6A /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805C320F1ED7702400A6CA6A /* AlertHelper.swift */; };
 		80A9339A1ED8351F00D38E46 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A933991ED8351F00D38E46 /* SearchBarView.swift */; };
+		80A9339C1ED868B200D38E46 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9339B1ED868B200D38E46 /* Reachability.swift */; };
+		80A9339E1ED869E500D38E46 /* DisconnectedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9339D1ED869E500D38E46 /* DisconnectedController.swift */; };
 		C74CD45B0682F31A837E5AAB /* Pods_Bliss_Recruitment_AppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D54F0EFD92A86F9E1E541882 /* Pods_Bliss_Recruitment_AppTests.framework */; };
 		CC2EC092A4F57FE76E3AD21E /* Pods_Bliss_Recruitment_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC510B8096C39DCF7ACB940 /* Pods_Bliss_Recruitment_App.framework */; };
 /* End PBXBuildFile section */
@@ -74,6 +76,8 @@
 		805C320D1ED755CF00A6CA6A /* ShareController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		805C320F1ED7702400A6CA6A /* AlertHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		80A933991ED8351F00D38E46 /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		80A9339B1ED868B200D38E46 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		80A9339D1ED869E500D38E46 /* DisconnectedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisconnectedController.swift; sourceTree = "<group>"; };
 		81D76A31D9309A488DC34A69 /* Pods_Bliss_Recruitment_AppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bliss_Recruitment_AppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82347516DA0BBEA4D9FE932B /* Pods-Bliss Recruitment AppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bliss Recruitment AppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bliss Recruitment AppUITests/Pods-Bliss Recruitment AppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9A4EBF5FEE8695D4675F2BBA /* Pods-Bliss Recruitment App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bliss Recruitment App.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bliss Recruitment App/Pods-Bliss Recruitment App.release.xcconfig"; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 				805C31FF1ED5DD4400A6CA6A /* Extensions.swift */,
 				805C32091ED723E800A6CA6A /* VoteProtocol.swift */,
 				805C320F1ED7702400A6CA6A /* AlertHelper.swift */,
+				80A9339B1ED868B200D38E46 /* Reachability.swift */,
 			);
 			path = "Bliss Recruitment App";
 			sourceTree = "<group>";
@@ -193,6 +198,7 @@
 				805C31FB1ED5DA7700A6CA6A /* QuestionDetailController.swift */,
 				805C320B1ED7316600A6CA6A /* LoadingController.swift */,
 				805C320D1ED755CF00A6CA6A /* ShareController.swift */,
+				80A9339D1ED869E500D38E46 /* DisconnectedController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -521,11 +527,13 @@
 				805C320C1ED7316600A6CA6A /* LoadingController.swift in Sources */,
 				805C32061ED70C9600A6CA6A /* Choice.swift in Sources */,
 				805C31CC1ED5D48000A6CA6A /* QuestionListController.swift in Sources */,
+				80A9339C1ED868B200D38E46 /* Reachability.swift in Sources */,
 				805C31FC1ED5DA7700A6CA6A /* QuestionDetailController.swift in Sources */,
 				805C32021ED6003700A6CA6A /* BlissApi.swift in Sources */,
 				80A9339A1ED8351F00D38E46 /* SearchBarView.swift in Sources */,
 				805C320A1ED723E800A6CA6A /* VoteProtocol.swift in Sources */,
 				805C32041ED6DC0500A6CA6A /* Question.swift in Sources */,
+				80A9339E1ED869E500D38E46 /* DisconnectedController.swift in Sources */,
 				805C31CA1ED5D48000A6CA6A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

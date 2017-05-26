@@ -28,6 +28,10 @@ class LoadingController: UIViewController {
         checkServerHealth()
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     fileprivate func checkServerHealth() {
         SwiftSpinner.show("Checking server health")
         BlissAPI.shared.checkHealth(success: {

@@ -14,6 +14,11 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         didSet {
             if let question = question {
                 questionName.text = question.question
+
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = Question.presentationFormat
+                datePublished.text = "(Published in: \(dateFormatter.string(from: question.publishedAt)))"
+           
                 
                 thumbnail.loadImageUsingUrlString(urlString: question.imageUrl, completion: {
                     self.updateThumbnailSizeFor(frameSize: self.view.frame.size)
@@ -46,12 +51,24 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         let imageView = QuestionImageView()
         imageView.backgroundColor = .yellow
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 4
+        imageView.clipsToBounds = true
         return imageView
     }()
     
     let questionName: UILabel = {
         let label = UILabel()
         label.text = ""
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.backgroundColor = .gray
+        return label
+    }()
+    
+    let datePublished: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textAlignment = .right
         label.backgroundColor = .gray
         return label
     }()
@@ -70,6 +87,7 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         
         view.backgroundColor = .red
         
+        navigationItem.title = "Question"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(sharePressed))
         
         setup()
@@ -102,8 +120,11 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         view.addSubview(questionName)
         questionName.anchor(top: thumbnail.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 26)
         
+        view.addSubview(datePublished)
+        datePublished.anchor(top: questionName.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 26)
+        
         view.addSubview(choicesCollectionView)
-        choicesCollectionView.anchor(top: questionName.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0)
+        choicesCollectionView.anchor(top: datePublished.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0)
     }
     
     func votedOn(selectedChoice: Choice) {

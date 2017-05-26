@@ -21,9 +21,7 @@ class QuestionListCellView: UICollectionViewCell {
             
             if let publishedAt = question?.publishedAt {
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = Question.dateFormat
-                //dateFormatter.locale = Locale.init(identifier: "en_GB")
-                
+                dateFormatter.dateFormat = Question.presentationFormat
                 date.text = dateFormatter.string(from: publishedAt)
             }
         }
@@ -32,12 +30,15 @@ class QuestionListCellView: UICollectionViewCell {
     let thumbnail: QuestionImageView = {
         let image = QuestionImageView()
         image.backgroundColor = .green
+        image.layer.cornerRadius = 4
+        image.clipsToBounds = true
         return image
     }()
     
     let questionText: UILabel = {
         let label = UILabel()
         label.backgroundColor = .gray
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.text = "A QUESTION"
         return label
     }()
@@ -46,6 +47,8 @@ class QuestionListCellView: UICollectionViewCell {
         let label = UILabel()
         label.backgroundColor = .red
         label.text = "date"
+        label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
     
@@ -62,10 +65,10 @@ class QuestionListCellView: UICollectionViewCell {
         thumbnail.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 0, width: 54, height: 0)
         
         addSubview(date)
-        date.anchor(top: nil, left: thumbnail.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 8, paddingRight: 8, width: 0, height: 12)
+        date.anchor(top: nil, left: thumbnail.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 12)
         
         addSubview(questionText)
-        questionText.anchor(top: topAnchor, left: thumbnail.rightAnchor, bottom: date.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 16, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)    }
+        questionText.anchor(top: topAnchor, left: thumbnail.rightAnchor, bottom: date.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -13,7 +13,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     let questionCellId = "questionCellId"
     var questions:[Question] = [Question]()
     var questionsSearched:[Question] = [Question]()
-    
+    var disconnectedController:DisconnectedController?
     
     let questionPerRequest:Int = 10
     var offsetToRequest = 0
@@ -35,6 +35,9 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityStatusChangedNotification), object: nil)
+        Reach().monitorReachabilityChanges()
+        
         // get rid of black bar underneath navbar
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -54,6 +57,25 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         self.view.addSubview(searchView)
         
         fetchQuestions()
+    }
+    
+    func networkStatusChanged(_ notification: Notification) {        
+        let status = Reach().connectionStatus()
+        
+        switch status {
+        case .unknown, .offline:
+            if disconnectedController == nil {
+                disconnectedController = DisconnectedController()
+                present(disconnectedController!, animated: true, completion: nil)
+            }
+        default:
+            if let disconnectedController = disconnectedController {
+                disconnectedController.regainedConnectivity {
+                    self.disconnectedController = nil
+                }
+            }
+        
+        }
     }
     
     func dismissKeyboard() {
@@ -177,7 +199,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         
         if searchOpen && searchPerformed{
             cell.question = questionsSearched[indexPath.item]
-            cell.questionText.text = "search \(indexPath.item)"
+            //cell.questionText.text = "search \(indexPath.item)"
             
             // download more if penultimate cell is shown
             if indexPath.item == questionsSearched.count - 2 {
@@ -187,7 +209,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
 
         } else {
                     cell.question = questions[indexPath.item]
-            cell.questionText.text = "normal \(indexPath.item)"
+            //cell.questionText.text = "normal \(indexPath.item)"
                     // download more if penultimate cell is shown
                     if indexPath.item == questions.count - 2 {
                         print("download more")

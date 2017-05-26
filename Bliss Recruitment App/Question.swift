@@ -17,6 +17,7 @@ struct Question {
     var choices:[Choice]
     
     static let dateFormat:String = "yyyy-MM-dd'T'HH:mm:SS.SSSZ"
+    static let presentationFormat:String = "yyyy-MM-dd '@' HH:mm:SS"
     
     init(json:[String:Any]) {
         self.id = json["id"] as? Int ?? 0
