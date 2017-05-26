@@ -132,18 +132,31 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
             choice.name == selectedChoice.name && choice.votes == selectedChoice.votes
         }
         
+        let spinner = AlertHelper.progressBarDisplayer(msg: "Voting...", true, view: self.view)
+        self.view.addSubview(spinner)
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
+        let onCompletion = {
+            spinner.removeFromSuperview()
+            UIApplication.shared.endIgnoringInteractionEvents()
+            
+        }
+        
         guard let questionIndex = idx else {return}
         
         question?.choices[questionIndex].votes += 1
-        guard let question = question else { return }
+        guard let questionToUpdate = question else { return }
         
-        BlissAPI.shared.updateQuestion(question: question, completion: { (question) in
-            self.question = question
+        BlissAPI.shared.updateQuestion(question: questionToUpdate, completion: { (question) in
+            onCompletion()
+            AlertHelper.displayAlert(title: "Vote", message: "Voted successfully!", displayTo: self)
+            self.question = questionToUpdate
         }) { (error) in
-            //TODO SHOW ALARM
+            onCompletion()
+            AlertHelper.displayAlert(title: "Vote", message: "Unable to vote. Please try again later.", displayTo: self)
             print(error)
+            self.question?.choices[questionIndex].votes -= 1
         }
-        
         
         print("Voted in \(selectedChoice.name)")
     }

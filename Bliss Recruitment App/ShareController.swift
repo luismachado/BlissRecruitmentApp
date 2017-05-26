@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShareController: UIViewController {
+class ShareController: UIViewController, UITextFieldDelegate {
     
     let urlContainer: UIView = {
         let container = UIView()
@@ -42,11 +42,12 @@ class ShareController: UIViewController {
         return label
     }()
     
-    let email: CustomTextField = {
+    lazy var email: CustomTextField = {
         let tf = CustomTextField()
         tf.placeholder = "Enter email..."
         tf.keyboardType = .emailAddress
         tf.backgroundColor = .white
+        tf.delegate = self
         tf.layer.cornerRadius = 4
         tf.clipsToBounds = true
         return tf
@@ -69,6 +70,16 @@ class ShareController: UIViewController {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Hide the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func sendPressed() {
         
         guard let urlToSend = url.text, urlToSend != "" else {
@@ -81,7 +92,12 @@ class ShareController: UIViewController {
             return
         }
         
-        // TODO CHECK EMAIL VALIDITY
+        if !isValidEmail(testStr: emailToSend) {
+            
+            AlertHelper.displayAlert(title: "Share", message: "Email format is incorrect", displayTo: self)
+            return
+            
+        }
         
         let spinner = AlertHelper.progressBarDisplayer(msg: "Sharing...", true, view: self.view)
         self.view.addSubview(spinner)
@@ -103,6 +119,14 @@ class ShareController: UIViewController {
             onCompletion()
             AlertHelper.displayAlert(title: "Share", message: "Unable to share the url. Please try again.", displayTo: self)
         }
+    }
+    
+    func isValidEmail(testStr:String) -> Bool {
+        // print("validate calendar: \(testStr)")
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
     }
     
     private func setup() {

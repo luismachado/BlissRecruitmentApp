@@ -22,7 +22,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     lazy var searchView: SearchBarView = {
         let view = SearchBarView(frame: CGRect(x: 0, y: -50, width: self.view.frame.size.width, height: 50))
         view.questionListController = self
-        view.backgroundColor = UIColor(red: 234/255, green: 0, blue: 0, alpha: 1)
+        view.backgroundColor = UIColor(red: 40/255, green: 43/255, blue: 52/255, alpha: 1)
         view.alpha = 1
         return view
     }()
@@ -42,7 +42,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityStatusChangedNotification), object: nil)
-        Reach().monitorReachabilityChanges()
+        //Reach().monitorReachabilityChanges()
         
         NotificationCenter.default.addObserver(self, selector: #selector(receivedNotificationUrl(_:)), name: NSNotification.Name("AppOpenedByUrlNotification"), object: nil)
         
@@ -52,7 +52,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = UIColor(red: 234/255, green: 0, blue: 0, alpha: 1)
+        navigationController?.navigationBar.barTintColor = UIColor(red: 40/255, green: 43/255, blue: 52/255, alpha: 1)
         navigationController?.navigationBar.tintColor = .white
         navigationController!.navigationBar.titleTextAttributes =
             [NSForegroundColorAttributeName: UIColor.white]
@@ -67,6 +67,10 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         self.view.addSubview(searchView)
         
         fetchQuestions()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func receivedNotificationUrl(_ notification: Notification) {
@@ -194,8 +198,9 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     func fetchSearchQuestions() {
         
         let searchTerm = searchView.inputTextField.text
+        let encodedSearchTerm = searchTerm?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         
-        BlissAPI.shared.obtainAllQuestions(limit: questionPerRequest, offset: offsetToRequestSearch * questionPerRequest, filter: searchTerm, completion: { (questions) in
+        BlissAPI.shared.obtainAllQuestions(limit: questionPerRequest, offset: offsetToRequestSearch * questionPerRequest, filter: encodedSearchTerm, completion: { (questions) in
             self.searchPerformed = true
             self.searchView.shareButton.isEnabled = self.searchPerformed
             self.questionsSearched.append(contentsOf: questions)
@@ -207,6 +212,10 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
             
             self.offsetToRequestSearch += 1 // if maybe server returns 0 questions dont increase and stop future requests
         }) { (error) in
+            
+            print(error.localizedDescription)
+            
+//            AlertHelper.displayAlert(title: "Search", message: "", displayTo: <#T##UIViewController#>)
             print(error)
         }
         
@@ -244,14 +253,12 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
             cell.question = questionsSearched[indexPath.item]
             // download more if penultimate cell is shown
             if indexPath.item == questionsSearched.count - 2 {
-                print("download more search")
                 fetchSearchQuestions()
             }
 
         } else {
             cell.question = questions[indexPath.item]
             if indexPath.item == questions.count - 2 {
-                print("download more")
                 fetchQuestions()
             }
         }
@@ -266,12 +273,16 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     
     func openDetailQuestionFor(id: Int) {
         print("QuestionListController: opening question id:\(id)")
+        UIApplication.shared.beginIgnoringInteractionEvents()
         BlissAPI.shared.obtainQuestionBy(id: id, completion: { (question) in
+            UIApplication.shared.endIgnoringInteractionEvents()
             let questionDetailController = QuestionDetailController()
             questionDetailController.question = question
             self.navigationController?.pushViewController(questionDetailController, animated: true)
         }) { (error) in
-            print(error) //TODO AlertController
+            UIApplication.shared.endIgnoringInteractionEvents()
+            AlertHelper.displayAlert(title: "Question", message: "Unable to retreive question. Please try again later.", displayTo: self)
+            print(error)
         }
     }
     
