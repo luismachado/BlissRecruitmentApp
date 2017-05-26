@@ -54,13 +54,17 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(receivedNotificationUrl(_:)), name: NSNotification.Name("AppOpenedByUrlNotification"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityStatusChangedNotification), object: nil)
-        Reach().monitorReachabilityChanges()
         
         super.viewDidLoad()
         
         setupNavBar()
         setupCollectionView()
+    }
+    
+    func startController() {
+        NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityStatusChangedNotification), object: nil)
+        Reach().monitorReachabilityChanges()
+        fetchQuestions()
     }
     
     private func setupNavBar() {

@@ -47,7 +47,7 @@ class LoadingController: UIViewController {
             SwiftSpinner.show("Server OK.", animated: false)
             self.delay(seconds: 1.0, completion: {
                 SwiftSpinner.hide()
-                self.questionListController?.fetchQuestions()
+                self.questionListController?.startController()
                 _ = self.navigationController?.popViewController(animated: true)
 
             })
