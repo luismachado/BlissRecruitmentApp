@@ -23,6 +23,7 @@ class ChoiceCellView: UICollectionViewCell {
     
     let choiceText: UILabel = {
         let label = UILabel()
+        label.adjustsFontSizeToFitWidth = true
         label.text = ""
         return label
     }()

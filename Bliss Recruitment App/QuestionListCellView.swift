@@ -29,7 +29,6 @@ class QuestionListCellView: UICollectionViewCell {
     
     let thumbnail: QuestionImageView = {
         let image = QuestionImageView()
-        //image.backgroundColor = .green
         image.layer.cornerRadius = 4
         image.clipsToBounds = true
         return image
@@ -37,7 +36,7 @@ class QuestionListCellView: UICollectionViewCell {
     
     let questionText: UILabel = {
         let label = UILabel()
-        //label.backgroundColor = .gray
+        label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.text = "A QUESTION"
         return label
@@ -45,7 +44,6 @@ class QuestionListCellView: UICollectionViewCell {
     
     let date: UILabel = {
         let label = UILabel()
-        //label.backgroundColor = .red
         label.text = "date"
         label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 12)

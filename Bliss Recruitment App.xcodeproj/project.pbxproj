@@ -676,6 +676,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B4BCFA032CB209085EA6B97C /* Pods-Bliss Recruitment App.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MJHBLUH3VK;
 				INFOPLIST_FILE = "Bliss Recruitment App/Info.plist";
@@ -691,6 +692,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A4EBF5FEE8695D4675F2BBA /* Pods-Bliss Recruitment App.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MJHBLUH3VK;
 				INFOPLIST_FILE = "Bliss Recruitment App/Info.plist";

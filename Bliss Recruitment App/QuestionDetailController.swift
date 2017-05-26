@@ -49,7 +49,6 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     let defaultThumbnailHeight: CGFloat = 200
     let thumbnail: QuestionImageView = {
         let imageView = QuestionImageView()
-        imageView.backgroundColor = .yellow
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 4
         imageView.clipsToBounds = true

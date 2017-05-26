@@ -23,6 +23,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     var offsetToRequestSearch = 0
     
     let spinner = UIActivityIndicatorView()
+    private let refreshControl = UIRefreshControl()
     
     lazy var searchView: SearchBarView = {
         let view = SearchBarView(frame: CGRect(x: 0, y: -50, width: self.view.frame.size.width, height: 50))
@@ -35,6 +36,7 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     var searchOpen: Bool = false
     var searchPerformed:Bool = false
     var spinningButton: UIBarButtonItem?
+    var hiddenButton: UIBarButtonItem?
     var openSearchBarButton: UIBarButtonItem?
     var closeSearchBarButton: UIBarButtonItem?
     
@@ -70,13 +72,33 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         navigationController?.navigationBar.tintColor = .white
         navigationController!.navigationBar.titleTextAttributes =
             [NSForegroundColorAttributeName: UIColor.white]
-        navigationItem.title = "Bliss Recruitment App"
+        //navigationItem.title = "Bliss Recruitment App"
+
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 71, height: 26))
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = #imageLiteral(resourceName: "bliss_logo")
         
+        self.navigationItem.titleView = imageView
+        
+        collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = backgroundColor
         collectionView?.register(QuestionListCellView.self, forCellWithReuseIdentifier: questionCellId)
         
+        let attributes = [ NSForegroundColorAttributeName : navigationColor ] as [String: Any]
+        refreshControl.tintColor = navigationColor
+        refreshControl.attributedTitle = NSAttributedString(string: "Refetching questions...", attributes: attributes)
+        refreshControl.addTarget(self, action: #selector(refetchQuestions), for: .valueChanged)
+        
+        if #available(iOS 10.0, *) {
+            collectionView?.refreshControl = refreshControl
+        } else {
+            collectionView?.addSubview(refreshControl)
+        }
+        
         spinner.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         spinningButton = UIBarButtonItem(customView: spinner)
+        hiddenButton = UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 35)))
+        navigationItem.leftBarButtonItem = hiddenButton
         
         openSearchBarButton = UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: #selector(handleToggleSearch))
         closeSearchBarButton = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(handleToggleSearch))
@@ -97,6 +119,18 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         if let url = notification.userInfo?["requestUrl"] as? String{
             openUrl(url: url)
         }
+    }
+    
+    func refetchQuestions() {
+        if searchOpen && searchPerformed {
+            offsetToRequestSearch = 0
+            fetchSearchQuestions()
+        } else {
+            offsetToRequest = 0
+            fetchQuestions()
+        }
+        
+        
     }
     
     func openUrl(url:String) {
@@ -211,13 +245,21 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     
     func stopSpinner() {
         self.spinner.stopAnimating()
-        self.navigationItem.leftBarButtonItem = nil
+        self.refreshControl.endRefreshing()
+        self.navigationItem.leftBarButtonItem = hiddenButton
     }
     
     func fetchQuestions() {
         startSpinner()
         BlissAPI.shared.obtainAllQuestions(limit: questionPerRequest, offset: offsetToRequest * questionPerRequest, filter: nil, completion: { (questions) in
-            self.questions.append(contentsOf: questions)
+            
+            if self.offsetToRequest == 0 {
+                self.questions =  questions
+            } else {
+               self.questions.append(contentsOf: questions)
+            }
+            
+            
             self.stopSpinner()
             self.collectionView?.reloadData()
             self.offsetToRequest += 1 // if maybe server returns 0 questions dont increase and stop future requests
@@ -234,10 +276,18 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         let encodedSearchTerm = searchTerm?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         
         BlissAPI.shared.obtainAllQuestions(limit: questionPerRequest, offset: offsetToRequestSearch * questionPerRequest, filter: encodedSearchTerm, completion: { (questions) in
+            
+            if self.offsetToRequest == 0 {
+                self.questionsSearched =  questions
+            } else {
+                self.questionsSearched.append(contentsOf: questions)
+            }
+            
             self.stopSpinner()
             self.searchPerformed = true
             self.searchView.shareButton.isEnabled = self.searchPerformed
-            self.questionsSearched.append(contentsOf: questions)
+            
+            
             self.collectionView?.reloadData()
             
             if self.offsetToRequestSearch == 0 && self.questionsSearched.count > 0 {
