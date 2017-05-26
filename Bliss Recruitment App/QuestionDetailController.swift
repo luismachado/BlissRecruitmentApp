@@ -59,23 +59,25 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     let questionName: UILabel = {
         let label = UILabel()
         label.text = ""
+        label.tintColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.backgroundColor = .gray
         return label
     }()
     
     let datePublished: UILabel = {
         let label = UILabel()
         label.text = ""
+        label.tintColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
         label.textAlignment = .right
-        label.backgroundColor = .gray
         return label
     }()
     
     let choicesCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-        cv.backgroundColor = .green
+        cv.backgroundColor = .clear
+        //cv.layer.cornerRadius = 4
+        //cv.clipsToBounds = true
         return cv
     }()
     
@@ -85,7 +87,7 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .red
+        view.backgroundColor = backgroundColor
         
         navigationItem.title = "Question"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(sharePressed))
@@ -118,10 +120,10 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         thumbnailHeightAnchor?.isActive = true
         
         view.addSubview(questionName)
-        questionName.anchor(top: thumbnail.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 26)
+        questionName.anchor(top: thumbnail.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 10, paddingBottom: 0, paddingRight: 8, width: 0, height: 26)
         
         view.addSubview(datePublished)
-        datePublished.anchor(top: questionName.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 26)
+        datePublished.anchor(top: questionName.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 10, width: 0, height: 26)
         
         view.addSubview(choicesCollectionView)
         choicesCollectionView.anchor(top: datePublished.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0)
@@ -161,6 +163,10 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         print("Voted in \(selectedChoice.name)")
     }
     
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 2
+//    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -179,8 +185,6 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         if let question = question {
             cell.choice = question.choices[indexPath.item]
         }
-        
-        cell.backgroundColor = .blue
         
         return cell
     }

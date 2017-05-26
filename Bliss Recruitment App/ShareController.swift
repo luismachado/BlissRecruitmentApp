@@ -12,7 +12,13 @@ class ShareController: UIViewController, UITextFieldDelegate {
     
     let urlContainer: UIView = {
         let container = UIView()
-        container.backgroundColor = .green
+        container.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        container.layer.cornerRadius = 4
+        container.clipsToBounds = false
+        container.layer.shadowColor = UIColor.black.cgColor
+        container.layer.shadowOpacity = 0.3
+        container.layer.shadowOffset = CGSize(width: 0, height: 2)
+        container.layer.shadowRadius = 4
         return container
     }()
     
@@ -32,7 +38,13 @@ class ShareController: UIViewController, UITextFieldDelegate {
     
     let emailContainer: UIView = {
         let container = UIView()
-        container.backgroundColor = .yellow
+        container.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        container.layer.cornerRadius = 4
+        container.clipsToBounds = false
+        container.layer.shadowColor = UIColor.black.cgColor
+        container.layer.shadowOpacity = 0.3
+        container.layer.shadowOffset = CGSize(width: 0, height: 2)
+        container.layer.shadowRadius = 4
         return container
     }()
     
@@ -46,6 +58,7 @@ class ShareController: UIViewController, UITextFieldDelegate {
         let tf = CustomTextField()
         tf.placeholder = "Enter email..."
         tf.keyboardType = .emailAddress
+        tf.borderStyle = .roundedRect
         tf.backgroundColor = .white
         tf.delegate = self
         tf.layer.cornerRadius = 4
@@ -56,14 +69,14 @@ class ShareController: UIViewController, UITextFieldDelegate {
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Send", for: .normal)
-        button.tintColor = .white
         button.addTarget(self, action: #selector(sendPressed), for: .touchUpInside)
+        button.titleLabel!.font =  UIFont.boldSystemFont(ofSize: 20)
         return button
     }()
     
     override func viewDidLoad() {
         
-        view.backgroundColor = .gray
+        view.backgroundColor = backgroundColor
         navigationItem.title = "Share"
         
         setup()
@@ -122,7 +135,6 @@ class ShareController: UIViewController, UITextFieldDelegate {
     }
     
     func isValidEmail(testStr:String) -> Bool {
-        // print("validate calendar: \(testStr)")
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
@@ -131,8 +143,10 @@ class ShareController: UIViewController, UITextFieldDelegate {
     
     private func setup() {
         
+        
+        
         view.addSubview(urlContainer)
-        urlContainer.anchor(top: topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        urlContainer.anchor(top: topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 70)
         
         urlContainer.addSubview(urlLabel)
         urlLabel.anchor(top: urlContainer.topAnchor, left: urlContainer.leftAnchor, bottom: nil, right: urlContainer.rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 20)
@@ -141,7 +155,7 @@ class ShareController: UIViewController, UITextFieldDelegate {
         url.anchor(top: urlLabel.bottomAnchor, left: urlContainer.leftAnchor, bottom: urlContainer.bottomAnchor, right: urlContainer.rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 4, width: 0, height: 0)
         
         view.addSubview(emailContainer)
-        emailContainer.anchor(top: urlContainer.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        emailContainer.anchor(top: urlContainer.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 70)
         
         emailContainer.addSubview(emailLabel)
         emailLabel.anchor(top: emailContainer.topAnchor, left: emailContainer.leftAnchor, bottom: nil, right: emailContainer.rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 20)
@@ -150,7 +164,7 @@ class ShareController: UIViewController, UITextFieldDelegate {
         email.anchor(top: emailLabel.bottomAnchor, left: emailContainer.leftAnchor, bottom: emailContainer.bottomAnchor, right: emailContainer.rightAnchor, paddingTop: 4, paddingLeft: 30, paddingBottom: 4, paddingRight: 30, width: 0, height: 0)
         
         view.addSubview(sendButton)
-        sendButton.anchor(top: emailContainer.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 40, height: 20)
+        sendButton.anchor(top: emailContainer.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 24)
         sendButton.centerXAnchor.constraint(equalTo: emailContainer.centerXAnchor).isActive = true
     }
     

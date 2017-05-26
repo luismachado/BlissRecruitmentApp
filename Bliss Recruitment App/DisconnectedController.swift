@@ -28,6 +28,7 @@ class DisconnectedController: UIViewController {
     func regainedConnectivity(completion: @escaping () -> ()) {
         SwiftSpinner.show("Connected",animated: false)
         self.delay(seconds: 1.0, completion: {
+            SwiftSpinner.hide()
             self.dismiss(animated: true, completion: { 
                 completion()
             })

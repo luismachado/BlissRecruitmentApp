@@ -27,10 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         questionListController = QuestionListController(collectionViewLayout: UICollectionViewFlowLayout())
         let navigationController = UINavigationController(rootViewController: questionListController!)
-        //let loadingController = LoadingController()
         
         self.window?.rootViewController = navigationController
-        //self.window?.rootViewController = loadingController
         self.window?.makeKeyAndVisible()
         
         return true

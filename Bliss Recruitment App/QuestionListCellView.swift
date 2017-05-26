@@ -29,7 +29,7 @@ class QuestionListCellView: UICollectionViewCell {
     
     let thumbnail: QuestionImageView = {
         let image = QuestionImageView()
-        image.backgroundColor = .green
+        //image.backgroundColor = .green
         image.layer.cornerRadius = 4
         image.clipsToBounds = true
         return image
@@ -37,7 +37,7 @@ class QuestionListCellView: UICollectionViewCell {
     
     let questionText: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .gray
+        //label.backgroundColor = .gray
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.text = "A QUESTION"
         return label
@@ -45,11 +45,17 @@ class QuestionListCellView: UICollectionViewCell {
     
     let date: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .red
+        //label.backgroundColor = .red
         label.text = "date"
         label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 12)
         return label
+    }()
+    
+    let separator: UIView = {
+        let view = UIView()
+        view.backgroundColor = .darkGray
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -59,7 +65,7 @@ class QuestionListCellView: UICollectionViewCell {
     
     fileprivate func setupCell() {
         
-        backgroundColor = .brown
+        //backgroundColor = .brown
         
         addSubview(thumbnail)
         thumbnail.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 0, width: 54, height: 0)
@@ -68,7 +74,12 @@ class QuestionListCellView: UICollectionViewCell {
         date.anchor(top: nil, left: thumbnail.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 12)
         
         addSubview(questionText)
-        questionText.anchor(top: topAnchor, left: thumbnail.rightAnchor, bottom: date.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)    }
+        questionText.anchor(top: topAnchor, left: thumbnail.rightAnchor, bottom: date.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)
+    
+        addSubview(separator)
+        separator.anchor(top: nil, left: questionText.leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

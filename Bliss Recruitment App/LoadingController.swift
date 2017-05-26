@@ -11,6 +11,8 @@ import SwiftSpinner
 
 class LoadingController: UIViewController {
     
+    var questionListController:QuestionListController?
+    
     func delay(seconds: Double, completion: @escaping () -> ()) {
         let popTime = DispatchTime.now() + Double(Int64( Double(NSEC_PER_SEC) * seconds )) / Double(NSEC_PER_SEC)
         
@@ -26,6 +28,13 @@ class LoadingController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkServerHealth()
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        navigationController?.isNavigationBarHidden = false
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -37,10 +46,10 @@ class LoadingController: UIViewController {
         BlissAPI.shared.checkHealth(success: {
             SwiftSpinner.show("Server OK.", animated: false)
             self.delay(seconds: 1.0, completion: {
-                print("here")
-                let questionListController = QuestionListController(collectionViewLayout: UICollectionViewFlowLayout())
-                let navigationController = UINavigationController(rootViewController: questionListController)
-                self.present(navigationController, animated: true, completion: nil)
+                SwiftSpinner.hide()
+                self.questionListController?.fetchQuestions()
+                _ = self.navigationController?.popViewController(animated: true)
+
             })
         }) { (error) in
             self.delay(seconds: 1.0, completion: {

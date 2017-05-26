@@ -14,7 +14,7 @@ class ChoiceCellView: UICollectionViewCell {
         didSet {
             if let choice = choice {
                 choiceText.text = choice.name
-                numberVotes.text = "\(choice.votes)"
+                numberVotes.text = "(\(choice.votes))"
             }
         }
     }
@@ -23,22 +23,20 @@ class ChoiceCellView: UICollectionViewCell {
     
     let choiceText: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .gray
-        label.text = "A QUESTION"
+        label.text = ""
         return label
     }()
     
     let numberVotes: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .red
-        label.text = "1234"
+        label.text = ""
+        label.textAlignment = .center
         return label
     }()
     
     lazy var voteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Vote", for: .normal)
-        button.backgroundColor = .yellow
         button.addTarget(self, action: #selector(votePressed), for: .touchUpInside)
         return button
     }()
@@ -58,14 +56,22 @@ class ChoiceCellView: UICollectionViewCell {
     
     fileprivate func setupCell() {
         
+        backgroundColor = .white
+        layer.cornerRadius = 4
+        clipsToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.3
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 4
+        
         addSubview(voteButton)
         voteButton.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 2, paddingRight: 2, width: 50, height: 0)
         
         addSubview(numberVotes)
-        numberVotes.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: voteButton.leftAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 2, paddingRight: 4, width: 50, height: 0)
+        numberVotes.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: voteButton.leftAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 2, paddingRight: 4, width: 70, height: 0)
         
         addSubview(choiceText)
-        choiceText.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: numberVotes.leftAnchor, paddingTop: 2, paddingLeft: 2, paddingBottom: 2, paddingRight: 4, width: 0, height: 0)
+        choiceText.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: numberVotes.leftAnchor, paddingTop: 2, paddingLeft: 4, paddingBottom: 2, paddingRight: 4, width: 0, height: 0)
 
     }
     

@@ -8,6 +8,9 @@
 
 import UIKit
 
+let backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+let navigationColor = UIColor.rgb(red: 40, green: 43, blue: 52)
+
 class QuestionListController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     let questionCellId = "questionCellId"
@@ -19,16 +22,19 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     var offsetToRequest = 0
     var offsetToRequestSearch = 0
     
+    let spinner = UIActivityIndicatorView()
+    
     lazy var searchView: SearchBarView = {
         let view = SearchBarView(frame: CGRect(x: 0, y: -50, width: self.view.frame.size.width, height: 50))
         view.questionListController = self
-        view.backgroundColor = UIColor(red: 40/255, green: 43/255, blue: 52/255, alpha: 1)
+        view.backgroundColor = navigationColor
         view.alpha = 1
         return view
     }()
     
     var searchOpen: Bool = false
     var searchPerformed:Bool = false
+    var spinningButton: UIBarButtonItem?
     var openSearchBarButton: UIBarButtonItem?
     var closeSearchBarButton: UIBarButtonItem?
     
@@ -36,37 +42,51 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let url = appDelegate.urlDeepLink {
+            fetchQuestions()
             openUrl(url: url)
         } else {
-            // TODO Open health check
+            let loadingController = LoadingController()
+            loadingController.questionListController = self
+            navigationController?.pushViewController(loadingController, animated: false)
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityStatusChangedNotification), object: nil)
-        //Reach().monitorReachabilityChanges()
+        Reach().monitorReachabilityChanges()
         
         NotificationCenter.default.addObserver(self, selector: #selector(receivedNotificationUrl(_:)), name: NSNotification.Name("AppOpenedByUrlNotification"), object: nil)
         
         super.viewDidLoad()
         
+        setup()
+        
+    }
+    
+    private func setup() {
         // get rid of black bar underneath navbar
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = UIColor(red: 40/255, green: 43/255, blue: 52/255, alpha: 1)
+        navigationController?.navigationBar.barTintColor = navigationColor
         navigationController?.navigationBar.tintColor = .white
         navigationController!.navigationBar.titleTextAttributes =
             [NSForegroundColorAttributeName: UIColor.white]
         navigationItem.title = "Bliss Recruitment App"
-        collectionView?.backgroundColor = .yellow
+        
+        collectionView?.backgroundColor = backgroundColor
         collectionView?.register(QuestionListCellView.self, forCellWithReuseIdentifier: questionCellId)
-
+        
+        spinner.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        spinningButton = UIBarButtonItem(customView: spinner)
+        
         openSearchBarButton = UIBarButtonItem(image: UIImage(named: "search"), style: .plain, target: self, action: #selector(handleToggleSearch))
         closeSearchBarButton = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(handleToggleSearch))
         
         navigationItem.rightBarButtonItem = openSearchBarButton
         self.view.addSubview(searchView)
-        
-        fetchQuestions()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     deinit {
@@ -184,23 +204,37 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         }
     }
     
-    fileprivate func fetchQuestions() {
-        
+    func startSpinner() {
+        navigationItem.leftBarButtonItem = spinningButton
+        spinner.startAnimating()
+    }
+    
+    func stopSpinner() {
+        self.spinner.stopAnimating()
+        self.navigationItem.leftBarButtonItem = nil
+    }
+    
+    func fetchQuestions() {
+        startSpinner()
         BlissAPI.shared.obtainAllQuestions(limit: questionPerRequest, offset: offsetToRequest * questionPerRequest, filter: nil, completion: { (questions) in
             self.questions.append(contentsOf: questions)
+            self.stopSpinner()
             self.collectionView?.reloadData()
             self.offsetToRequest += 1 // if maybe server returns 0 questions dont increase and stop future requests
         }) { (error) in
+            self.stopSpinner()
+            AlertHelper.displayAlert(title: "Fetch Questions", message: "Unable to fetch questions. Please try again later.", displayTo: self)
             print(error)
         }
     }
     
     func fetchSearchQuestions() {
-        
+        startSpinner()
         let searchTerm = searchView.inputTextField.text
         let encodedSearchTerm = searchTerm?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         
         BlissAPI.shared.obtainAllQuestions(limit: questionPerRequest, offset: offsetToRequestSearch * questionPerRequest, filter: encodedSearchTerm, completion: { (questions) in
+            self.stopSpinner()
             self.searchPerformed = true
             self.searchView.shareButton.isEnabled = self.searchPerformed
             self.questionsSearched.append(contentsOf: questions)
@@ -212,10 +246,8 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
             
             self.offsetToRequestSearch += 1 // if maybe server returns 0 questions dont increase and stop future requests
         }) { (error) in
-            
-            print(error.localizedDescription)
-            
-//            AlertHelper.displayAlert(title: "Search", message: "", displayTo: <#T##UIViewController#>)
+            self.stopSpinner()
+            AlertHelper.displayAlert(title: "Search", message: "Unable to search questions. Please try again later.", displayTo: self)
             print(error)
         }
         
@@ -234,6 +266,10 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         questionsSearched.removeAll()
         offsetToRequestSearch = 0
         fetchSearchQuestions()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -273,14 +309,19 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     
     func openDetailQuestionFor(id: Int) {
         print("QuestionListController: opening question id:\(id)")
+        
+        startSpinner()
+        
         UIApplication.shared.beginIgnoringInteractionEvents()
         BlissAPI.shared.obtainQuestionBy(id: id, completion: { (question) in
             UIApplication.shared.endIgnoringInteractionEvents()
+            self.stopSpinner()
             let questionDetailController = QuestionDetailController()
             questionDetailController.question = question
             self.navigationController?.pushViewController(questionDetailController, animated: true)
         }) { (error) in
             UIApplication.shared.endIgnoringInteractionEvents()
+            self.stopSpinner()
             AlertHelper.displayAlert(title: "Question", message: "Unable to retreive question. Please try again later.", displayTo: self)
             print(error)
         }
