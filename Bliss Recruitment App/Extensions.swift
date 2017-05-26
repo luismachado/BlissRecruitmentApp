@@ -17,29 +17,6 @@ extension UIColor {
 }
 
 extension UIView {
-    func applyGradient(colours: [CGColor]) -> Void {
-        self.applyGradient(colours: colours, locations: nil)
-    }
-    
-    func applyGradient(colours: [CGColor], locations: [NSNumber]?) -> Void {
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = self.bounds
-        gradient.colors = colours
-        gradient.locations = locations
-        self.layer.insertSublayer(gradient, at: 0)
-    }
-    
-    func applyGradient(colours: [CGColor], startPoint: CGPoint, endPoint: CGPoint) -> Void {
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = self.bounds
-        gradient.colors = colours
-        gradient.startPoint = startPoint
-        gradient.endPoint = endPoint
-        self.layer.insertSublayer(gradient, at: 0)
-    }
-}
-
-extension UIView {
     func anchor(top: NSLayoutYAxisAnchor?, left: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, right: NSLayoutXAxisAnchor?,  paddingTop: CGFloat, paddingLeft: CGFloat, paddingBottom: CGFloat, paddingRight: CGFloat, width: CGFloat, height: CGFloat) {
         
         translatesAutoresizingMaskIntoConstraints = false
@@ -72,52 +49,4 @@ extension UIView {
 }
 
 
-let imageCache = NSCache<NSString, UIImage>()
 
-class QuestionImageView: UIImageView {
-    
-    var imageUrlString: String?
-    
-    func loadImageUsingUrlString(urlString: String, completion: (() -> ())?) {
-        
-        imageUrlString = urlString
-        
-        let url = URL(string: urlString)
-        
-        image = nil
-        
-        if let imageFromCache = imageCache.object(forKey: NSString(string: urlString)) {
-            self.image = imageFromCache
-            if let completion = completion {
-                completion()
-            }
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-            
-            if let error = error {
-                print(error)
-            }
-            
-            if let data = data {
-                DispatchQueue.main.async(execute: {
-                    
-                    if let downloadedImage = UIImage(data: data) {
-                        imageCache.setObject(downloadedImage, forKey: NSString(string: urlString))
-                        
-                        if self.imageUrlString == urlString {
-                            self.image = downloadedImage
-                            
-                            if let completion = completion {
-                                completion()
-                            }
-                        }
-                    }
-                })
-            }
-            
-        }).resume()
-    }
-    
-}

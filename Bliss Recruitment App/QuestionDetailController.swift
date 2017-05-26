@@ -42,8 +42,7 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
             }
         }
         
-        thumbnailHeightAnchor?.constant = CGFloat(height)
-        
+        thumbnailHeightAnchor?.constant = CGFloat(height)        
     }
     
     let defaultThumbnailHeight: CGFloat = 200
@@ -75,8 +74,6 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     let choicesCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.backgroundColor = .clear
-        //cv.layer.cornerRadius = 4
-        //cv.clipsToBounds = true
         return cv
     }()
     
@@ -140,11 +137,9 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         let onCompletion = {
             spinner.removeFromSuperview()
             UIApplication.shared.endIgnoringInteractionEvents()
-            
         }
         
         guard let questionIndex = idx else {return}
-        
         question?.choices[questionIndex].votes += 1
         guard let questionToUpdate = question else { return }
         
@@ -156,16 +151,9 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
             onCompletion()
             AlertHelper.displayAlert(title: "Vote", message: "Unable to vote. Please try again later.", displayTo: self)
             print(error)
-            self.question?.choices[questionIndex].votes -= 1
+            self.question?.choices[questionIndex].votes -= 1 // vote failed so subtract one to the count
         }
-        
-        print("Voted in \(selectedChoice.name)")
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 2
-//    }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         

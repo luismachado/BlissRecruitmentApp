@@ -55,7 +55,6 @@ class LoadingController: UIViewController {
             self.delay(seconds: 1.0, completion: {
                 SwiftSpinner.hide({
                     SwiftSpinner.show("Failed to connect. Retry?",animated: false).addTapHandler({
-                        print("tapped")
                         self.checkServerHealth()
                     }, subtitle: "Tap to Retry")
                 })

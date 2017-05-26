@@ -48,7 +48,6 @@ class ChoiceCellView: UICollectionViewCell {
     }
     
     @objc fileprivate func votePressed() {
-        print("vote pressed")
         if let choice = choice {
             voteDelegate?.votedOn(selectedChoice: choice)
         }
