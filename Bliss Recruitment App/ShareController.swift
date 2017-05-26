@@ -24,8 +24,9 @@ class ShareController: UIViewController {
     
     let url: UILabel = {
         let label = UILabel()
-        label.text = "blissapplications://blablablabla"
+        label.text = "blissapplications://"
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -41,8 +42,8 @@ class ShareController: UIViewController {
         return label
     }()
     
-    let email: UITextField = {
-        let tf = UITextField()
+    let email: CustomTextField = {
+        let tf = CustomTextField()
         tf.placeholder = "Enter email..."
         tf.keyboardType = .emailAddress
         tf.backgroundColor = .white
@@ -70,6 +71,18 @@ class ShareController: UIViewController {
     
     func sendPressed() {
         
+        guard let urlToSend = url.text, urlToSend != "" else {
+            AlertHelper.displayAlert(title: "Share", message: "Url field has to be filled", displayTo: self)
+            return
+        }
+        
+        guard let emailToSend = email.text, emailToSend != "" else {
+            AlertHelper.displayAlert(title: "Share", message: "Email field has to be filled", displayTo: self)
+            return
+        }
+        
+        // TODO CHECK EMAIL VALIDITY
+        
         let spinner = AlertHelper.progressBarDisplayer(msg: "Sharing...", true, view: self.view)
         self.view.addSubview(spinner)
         UIApplication.shared.beginIgnoringInteractionEvents()
@@ -79,21 +92,17 @@ class ShareController: UIViewController {
             UIApplication.shared.endIgnoringInteractionEvents()
         }
         
-        BlissAPI.shared.share(destinationEmail: "email@email.com", contentUrl: "blissapplications://123", success: {
-            print("success")
+        BlissAPI.shared.share(destinationEmail: emailToSend, contentUrl: urlToSend, success: {
             onCompletion()
             AlertHelper.displayAlert(title: "Share", message: "Shared successfully", displayTo: self, completion: { (action) in
                 
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                _ = self.navigationController?.popViewController(animated: true)
             })
         }) { (error) in
             print(error)
             onCompletion()
             AlertHelper.displayAlert(title: "Share", message: "Unable to share the url. Please try again.", displayTo: self)
         }
-        
-        //TODO CHECK EMAIL
-        
     }
     
     private func setup() {

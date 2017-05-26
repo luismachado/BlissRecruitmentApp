@@ -81,7 +81,12 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
     }
     
     @objc private func sharePressed() {
+        
+        guard let questionId = question?.id else { return }
+        
+        let url = "blissrecruitment://questions?question_id=\(questionId)"
         let shareController = ShareController()
+        shareController.url.text = url
         navigationController?.pushViewController(shareController, animated: true)
     }
     

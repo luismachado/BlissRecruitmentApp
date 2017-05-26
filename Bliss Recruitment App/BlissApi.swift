@@ -35,7 +35,11 @@ class BlissAPI: NSObject {
                             completion: @escaping ([Question]) -> (),
                             failure: @escaping(Error) -> ()) {
         
-        let filterString = filter != nil ? "&\(filter)" : ""
+        var filterString = ""
+        if let filter = filter {
+            filterString = "&\(filter)"
+        }
+        
         let requestUrl = stringUrl+"questions?\(limit)&\(offset)"+filterString
         print(requestUrl)
         Alamofire.request(requestUrl).validate().responseJSON { (response) in
