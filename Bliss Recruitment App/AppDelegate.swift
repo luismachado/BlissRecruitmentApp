@@ -12,21 +12,39 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var urlDeepLink:String?
+    var questionListController:QuestionListController?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
+
+        if let url = launchOptions?[UIApplicationLaunchOptionsKey.url] as? NSURL, let urlString = url.absoluteString {
+            urlDeepLink = urlString
+        }
         
-        //let questionListController = QuestionListController(collectionViewLayout: UICollectionViewFlowLayout())
-        //let navigationController = UINavigationController(rootViewController: questionListController)
+        questionListController = QuestionListController(collectionViewLayout: UICollectionViewFlowLayout())
+        let navigationController = UINavigationController(rootViewController: questionListController!)
+        //let loadingController = LoadingController()
         
-        let loadingController = LoadingController()
-        
-        //self.window?.rootViewController = navigationController
-        self.window?.rootViewController = loadingController
+        self.window?.rootViewController = navigationController
+        //self.window?.rootViewController = loadingController
         self.window?.makeKeyAndVisible()
+        
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+
+        let urlString = url.absoluteString
+        
+        if urlString.hasPrefix("blissrecruitment://questions?") {            
+            if app.applicationState == .background || app.applicationState == .inactive {
+                NotificationCenter.default.post(name: NSNotification.Name("AppOpenedByUrlNotification"), object: nil, userInfo: ["requestUrl":urlString])
+            }
+        }
         
         return true
     }

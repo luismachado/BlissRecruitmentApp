@@ -33,10 +33,20 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     var closeSearchBarButton: UIBarButtonItem?
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let url = appDelegate.urlDeepLink {
+            openUrl(url: url)
+        } else {
+            // TODO Open health check
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityStatusChangedNotification), object: nil)
         Reach().monitorReachabilityChanges()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedNotificationUrl(_:)), name: NSNotification.Name("AppOpenedByUrlNotification"), object: nil)
+        
+        super.viewDidLoad()
         
         // get rid of black bar underneath navbar
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -57,6 +67,48 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         self.view.addSubview(searchView)
         
         fetchQuestions()
+    }
+    
+    func receivedNotificationUrl(_ notification: Notification) {
+        if let url = notification.userInfo?["requestUrl"] as? String{
+            openUrl(url: url)
+        }
+    }
+    
+    func openUrl(url:String) {
+        let request = url.replacingOccurrences(of: "blissrecruitment://questions?", with: "")
+
+        var array = request.characters.split(separator: "=").map(String.init)
+        
+        if array.count > 0 {
+            if array[0] == "question_id" && array.count == 2 {
+                guard let questionId = Int(array[1]) else { return }
+                if (navigationController?.topViewController as? QuestionDetailController) != nil {
+                    _ = navigationController?.popViewController(animated: false)
+                }
+                openDetailQuestionFor(id: questionId)
+            }
+            if array[0] == "question_filter" {
+
+                if (navigationController?.topViewController as? QuestionDetailController) != nil {
+                    _ = navigationController?.popViewController(animated: false)
+                }
+                
+                if !searchOpen {
+                    handleToggleSearch()
+                } else {
+                    searchView.inputTextField.text = ""
+                }
+                
+                if array.count == 1 {
+                    // Show initial list or show as is?
+                } else if array.count == 2 {
+                    print("Searching for: \(array[1])")
+                    searchView.inputTextField.text = array[1]
+                    searchView.handleSearch()
+                }
+            }
+        }
     }
     
     func networkStatusChanged(_ notification: Notification) {        
@@ -120,7 +172,10 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
                 
                 self.searchView.frame = CGRect(x: self.searchView.frame.minX, y: self.searchView.frame.minY + insetValue, width: self.searchView.frame.width, height: self.searchView.frame.height)
             }, completion: { (success) in
-                self.searchView.inputTextField.text = ""
+                if !self.searchOpen {
+                    self.searchView.inputTextField.text = ""
+                }
+                
             })
         }
     }
@@ -167,21 +222,9 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     }
     
     func handleSearch() {
-        
-        //let indexPath = IndexPath(item: 0, section: 0)
-        //collectionView?.scrollToItem(at: indexPath, at: .top, animated: false)
         questionsSearched.removeAll()
-        
         offsetToRequestSearch = 0
-//        if searchView.inputTextField.text == "" {
-//            searchPerformed = false
-//            searchView.shareButton.isEnabled = self.searchPerformed
-//            collectionView?.reloadData()
-//        } else {
-            fetchSearchQuestions()
-//        }
-        
-        
+        fetchSearchQuestions()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -199,8 +242,6 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         
         if searchOpen && searchPerformed{
             cell.question = questionsSearched[indexPath.item]
-            //cell.questionText.text = "search \(indexPath.item)"
-            
             // download more if penultimate cell is shown
             if indexPath.item == questionsSearched.count - 2 {
                 print("download more search")
@@ -208,18 +249,12 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
             }
 
         } else {
-                    cell.question = questions[indexPath.item]
-            //cell.questionText.text = "normal \(indexPath.item)"
-                    // download more if penultimate cell is shown
-                    if indexPath.item == questions.count - 2 {
-                        print("download more")
-                        fetchQuestions()
-                    }
+            cell.question = questions[indexPath.item]
+            if indexPath.item == questions.count - 2 {
+                print("download more")
+                fetchQuestions()
+            }
         }
-        
-        
-        
-
         
         return cell
     }
@@ -229,11 +264,8 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         return CGSize(width: self.view.frame.width, height: 70)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        //Maybe use this question object instead of downloading it?
-        let id = questions[indexPath.item].id
-        
+    func openDetailQuestionFor(id: Int) {
+        print("QuestionListController: opening question id:\(id)")
         BlissAPI.shared.obtainQuestionBy(id: id, completion: { (question) in
             let questionDetailController = QuestionDetailController()
             questionDetailController.question = question
@@ -241,6 +273,13 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
         }) { (error) in
             print(error) //TODO AlertController
         }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //Maybe use this question object instead of downloading it?
+        let id = questions[indexPath.item].id
+        openDetailQuestionFor(id: id)
     }
 }
 
