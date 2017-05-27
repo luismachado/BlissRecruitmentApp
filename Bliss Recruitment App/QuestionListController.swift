@@ -120,7 +120,18 @@ class QuestionListController: UICollectionViewController, UICollectionViewDelega
     }
     
     func openUrl(url:String) {
+        
         let request = url.replacingOccurrences(of: "blissrecruitment://questions?", with: "")
+        
+        if request == "" {
+            if (navigationController?.topViewController as? QuestionDetailController) != nil {
+                _ = navigationController?.popViewController(animated: false)
+            }
+            if searchOpen {
+                handleToggleSearch()
+            }
+            return
+        }
 
         var array = request.characters.split(separator: "=").map(String.init)
         
