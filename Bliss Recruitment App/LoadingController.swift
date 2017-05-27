@@ -27,6 +27,7 @@ class LoadingController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        view.backgroundColor = navigationColor
         checkServerHealth()
         navigationController?.isNavigationBarHidden = true
     }

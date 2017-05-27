@@ -21,6 +21,7 @@ class DisconnectedController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        view.backgroundColor = navigationColor
         SwiftSpinner.show("Connectivity Lost. Trying to reconnect...")
         navigationController?.isNavigationBarHidden = true
     }
