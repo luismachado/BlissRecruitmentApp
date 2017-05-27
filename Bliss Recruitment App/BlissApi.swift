@@ -90,7 +90,7 @@ class BlissAPI: NSObject {
         
         let requestUrl = stringUrl+"questions/\(question.id)"
         let questionJson:Parameters = question.toJson()
-
+        print(requestUrl)
         Alamofire.request(requestUrl, method: .put, parameters: questionJson, encoding: JSONEncoding.default).validate().responseJSON { (response) in
 
             switch response.result {
@@ -112,8 +112,7 @@ class BlissAPI: NSObject {
                failure: @escaping(Error) -> ()) {
         
         let requestUrl = stringUrl+"share?\(destinationEmail)&\(contentUrl)"
-
-        
+        print(requestUrl)
         Alamofire.request(requestUrl, method: .post).validate().responseJSON { (response) in
             
             switch response.result {

@@ -146,7 +146,7 @@ class QuestionDetailController: UIViewController, UICollectionViewDelegate, UICo
         BlissAPI.shared.updateQuestion(question: questionToUpdate, completion: { (question) in
             onCompletion()
             AlertHelper.displayAlert(title: "Vote", message: "Voted successfully!", displayTo: self)
-            self.question = questionToUpdate
+            self.question = question
         }) { (error) in
             onCompletion()
             AlertHelper.displayAlert(title: "Vote", message: "Unable to vote. Please try again later.", displayTo: self)
