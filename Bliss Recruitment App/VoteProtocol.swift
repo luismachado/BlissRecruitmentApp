@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol VoteProtocol {
+protocol VoteProtocol: class {
     
     func votedOn(selectedChoice: Choice)
 }

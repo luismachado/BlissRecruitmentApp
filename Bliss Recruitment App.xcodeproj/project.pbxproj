@@ -29,6 +29,7 @@
 		80A9339C1ED868B200D38E46 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9339B1ED868B200D38E46 /* Reachability.swift */; };
 		80A9339E1ED869E500D38E46 /* DisconnectedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A9339D1ED869E500D38E46 /* DisconnectedController.swift */; };
 		80A964981ED8D80500867815 /* QuestionListController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A964971ED8D80500867815 /* QuestionListController+Search.swift */; };
+		80F695B01EFBEA4900136113 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80F695AF1EFBEA4800136113 /* Storyboard.storyboard */; };
 		80FBAECE1ED8D954002E5F60 /* QuestionListController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FBAECD1ED8D954002E5F60 /* QuestionListController+CollectionView.swift */; };
 		80FBAED01ED8DB29002E5F60 /* QuestionImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FBAECF1ED8DB29002E5F60 /* QuestionImageView.swift */; };
 		C74CD45B0682F31A837E5AAB /* Pods_Bliss_Recruitment_AppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D54F0EFD92A86F9E1E541882 /* Pods_Bliss_Recruitment_AppTests.framework */; };
@@ -82,6 +83,7 @@
 		80A9339B1ED868B200D38E46 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		80A9339D1ED869E500D38E46 /* DisconnectedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisconnectedController.swift; sourceTree = "<group>"; };
 		80A964971ED8D80500867815 /* QuestionListController+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "QuestionListController+Search.swift"; sourceTree = "<group>"; };
+		80F695AF1EFBEA4800136113 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		80FBAECD1ED8D954002E5F60 /* QuestionListController+CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "QuestionListController+CollectionView.swift"; sourceTree = "<group>"; };
 		80FBAECF1ED8DB29002E5F60 /* QuestionImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionImageView.swift; sourceTree = "<group>"; };
 		81D76A31D9309A488DC34A69 /* Pods_Bliss_Recruitment_AppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bliss_Recruitment_AppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +236,7 @@
 				805C31D01ED5D48000A6CA6A /* Assets.xcassets */,
 				805C31D51ED5D48000A6CA6A /* Info.plist */,
 				805C31D21ED5D48000A6CA6A /* LaunchScreen.storyboard */,
+				80F695AF1EFBEA4800136113 /* Storyboard.storyboard */,
 			);
 			name = System;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 			files = (
 				805C31D41ED5D48000A6CA6A /* LaunchScreen.storyboard in Resources */,
 				805C31D11ED5D48000A6CA6A /* Assets.xcassets in Resources */,
+				80F695B01EFBEA4900136113 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

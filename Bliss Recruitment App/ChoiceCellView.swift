@@ -19,7 +19,7 @@ class ChoiceCellView: UICollectionViewCell {
         }
     }
     
-    var voteDelegate: VoteProtocol?
+    weak var voteDelegate: VoteProtocol?
     
     let choiceText: UILabel = {
         let label = UILabel()

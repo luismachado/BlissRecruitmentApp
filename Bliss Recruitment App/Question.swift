@@ -23,7 +23,7 @@ struct Question {
         self.id = json["id"] as? Int ?? 0
         self.imageUrl = json["image_url"] as? String ?? ""
         self.thumbUrl = json["thumb_url"] as? String ?? ""
-        self.question = json["question"] as? String ?? ""
+        self.question = json["question"]  as? String ?? ""
         
         self.choices = [Choice]()
         if let jsonChoices = json["choices"] as? Array<[String:Any]> {
